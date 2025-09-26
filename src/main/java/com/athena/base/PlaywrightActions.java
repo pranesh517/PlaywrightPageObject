@@ -1,0 +1,35 @@
+package com.athena.base;
+
+import com.microsoft.playwright.Locator;
+import com.microsoft.playwright.Page;
+import com.microsoft.playwright.TimeoutError;
+
+import java.sql.Time;
+
+public class PlaywrightActions {
+
+    private Page page;
+
+    public PlaywrightActions(Page page) {
+        this.page = page;
+    }
+
+    public <T> boolean isElementVisible(T arg) {
+        if (arg instanceof String) {
+            try {
+                page.waitForCondition(() -> page.locator((String) arg).isVisible());
+                return true;
+            } catch (TimeoutError e) {
+                return false;
+            }
+        } else if (arg instanceof Locator){
+            try {
+                page.waitForCondition(()-> ((Locator) arg).isVisible());
+                return true;
+            } catch (TimeoutError e) {
+                return false;
+            }
+        }
+        return false;
+    }
+}

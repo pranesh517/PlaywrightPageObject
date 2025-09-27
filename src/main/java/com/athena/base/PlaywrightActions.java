@@ -32,4 +32,25 @@ public class PlaywrightActions {
         }
         return false;
     }
+
+    public <T> boolean isElementVisible(T arg, int timeout) {
+        if (arg instanceof String) {
+            try {
+                page.waitForCondition(() -> page.locator((String) arg).isVisible(),
+                        new Page.WaitForConditionOptions().setTimeout(timeout));
+                return true;
+            } catch (TimeoutError e) {
+                return false;
+            }
+        } else if (arg instanceof Locator){
+            try {
+                page.waitForCondition(()-> ((Locator) arg).isVisible(),
+                        new Page.WaitForConditionOptions().setTimeout(timeout));
+                return true;
+            } catch (TimeoutError e) {
+                return false;
+            }
+        }
+        return false;
+    }
 }
